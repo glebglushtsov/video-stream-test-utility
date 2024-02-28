@@ -9,7 +9,8 @@ function requestHandler(request, response) {
     if (request.url === '/streams') {
         response.writeHead(200, {
             'Content-Type':                'application/json',
-            'Access-Control-Allow-Origin': 'http://localhost:3000'
+            'Access-Control-Allow-Origin': 'http://localhost:3000',
+            'Vary': 'Origin'
         });
 
         db.all("SELECT * FROM streams", (err, rows) => {

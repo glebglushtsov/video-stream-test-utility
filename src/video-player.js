@@ -5,6 +5,8 @@ class VideoPlayer {
     constructor(videoEl, listEl) {
         this.#listElement = listEl;
         this.#videoElement = videoEl;
+
+        this.#videoElement.addEventListener('error', () => this.#videoErrorHandler);
     }
 
     init(apiUrl) {
@@ -12,6 +14,22 @@ class VideoPlayer {
             .then(response => response.json())
             .then(({data}) => this.#validateStreams(data))
             .then(data => this.#renderPlaylist(data));
+    }
+
+    play() {
+        this.#videoElement.play();
+    }
+
+    pause() {
+        this.#videoElement.pause();
+    }
+
+    seek(position) {
+        console.log({currentTime: this.#videoElement.currentTime, position, duration: this.#videoElement.duration});
+
+        if (0 < position < this.#videoElement.duration && !isNaN(position)) {
+            this.#videoElement.currentTime = position;
+        }
     }
 
     #validateStreams(data) {
@@ -43,6 +61,20 @@ class VideoPlayer {
 
     #loadStream(streamUrl) {
         this.#videoElement.setAttribute('src', streamUrl);
+
+        this.play();
+    }
+
+    #videoErrorHandler(event) {
+        let errorMessage;
+
+        if (event.target.error && event.target.error.code === 4) {
+            errorMessage = 'Network error occurred. The stream could not be loaded.';
+        } else {
+            errorMessage = 'An error occurred while playing the stream.';
+        }
+
+        console.error(errorMessage);
     }
 }
 
