@@ -1,11 +1,11 @@
-import VideoPlayer from './video-player.js';
+import createVideoPlayer from './video-player.js';
 
 const videoElement = document.getElementById('videoElement');
 const listElement = document.getElementById('listElement');
 const playButton = document.getElementById('playButton');
 const pauseButton = document.getElementById('pauseButton');
 const seekInput = document.getElementById('enteredTime');
-const videoPlayer = new VideoPlayer(videoElement, listElement);
+const videoPlayer = createVideoPlayer(videoElement, listElement);
 
 videoPlayer.init('http://localhost:8000/streams');
 
